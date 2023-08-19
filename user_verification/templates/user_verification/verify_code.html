@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Code Verification</title>
+</head>
+<body>
+    <h1>Code Verification</h1>
+    
+    {% if error_message %}
+        <p style="color: red;">{{ error_message }}</p>
+    {% endif %}
+    
+    <form method="post" action="{% url 'verify-code' %}">
+        {% csrf_token %}
+        <label for="user_code">Enter Verification Code:</label>
+        <input type="text" id="user_code" name="user_code">
+        <button type="submit">Verify</button>
+    </form>
+</body>
+</html>
