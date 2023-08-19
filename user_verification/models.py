@@ -26,6 +26,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     phone_number = models.CharField(max_length=20, unique=True)
     my_invite_code = models.ForeignKey('InviteCode', on_delete=models.SET_NULL, related_name='my_invite', null=True, blank=True)
     friend_invite_code = models.ForeignKey('InviteCode', on_delete=models.SET_NULL, related_name='friend_invite', null=True, blank=True)
+    is_verified = models.BooleanField(default=False) 
 
     objects = CustomUserManager()
 

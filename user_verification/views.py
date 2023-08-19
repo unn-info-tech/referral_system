@@ -10,6 +10,7 @@ from .models import CustomUser, InviteCode
 import time
 import random
 import string
+from rest_framework import status
 
 
 class PhoneNumberVerificationView(APIView):
@@ -75,6 +76,7 @@ class CodeVerificationView(APIView):
  
                 # Now set the invite code to the user's my_invite_code field
                 user.my_invite_code = invite
+                user.is_verified = True
                 user.save()
 
 
@@ -84,6 +86,61 @@ class CodeVerificationView(APIView):
         else:
             # Code is incorrect, display error message
             return render(request, 'user_verification/verify_code.html', {'error_message': 'Invalid code'})
+        
+
+
+class MyPageView(APIView):
+    def get(self, request):
+        phone_number = request.session.get('phone_number')
+        
+        try:
+            user = CustomUser.objects.get(phone_number=phone_number)
+        except CustomUser.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+        if user.is_verified:
+            # Get users with the same friend_invite_code
+            friends = CustomUser.objects.filter(friend_invite_code=user.my_invite_code)
+            
+            context = {
+                'user': user,
+                'friends': friends
+            }
+            
+            return render(request, 'user_verification/my_page.html', context)
+        else:
+            return Response({"error": "User is not verified"}, status=status.HTTP_403_FORBIDDEN)
+        
+
+    
+class VerifyFriendInviteView(APIView):
+    def post(self, request):
+        phone_number = request.session.get('phone_number')
+        
+        try:
+            user = CustomUser.objects.get(phone_number=phone_number)
+        except CustomUser.DoesNotExist:
+            return render(request, 'user_verification/error.html', {"error": "User not found"})
+        
+        if user.is_verified:
+            friend_invite_code = request.POST.get('friend_invite_code')
+            
+            # Check if the provided friend invite code exists
+            try:
+                invite = InviteCode.objects.get(invite_code=friend_invite_code)
+            except InviteCode.DoesNotExist:
+                return render(request, 'user_verification/error.html', {"error": "Invalid friend invite code"})
+            
+            # Update the user's friend_invite_code
+            user.friend_invite_code = invite
+            user.save()
+            
+            # Redirect to a success page or another view
+            return redirect('my-page')  # You can replace 'my-page' with the appropriate URL name
+        
+        else:
+            return render(request, 'user_verification/error.html', {"error": "User is not verified"})
+
 
 
 

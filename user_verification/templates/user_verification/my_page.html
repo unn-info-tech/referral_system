@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Page</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #00cc00;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        h1, h2, p {
+            color: #333;
+        }
+
+        h2 {
+            margin-top: 30px;
+            border-bottom: 2px solid #00cc00;
+            padding-bottom: 5px;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        button[type="submit"] {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #00cc00;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #009900;
+        }
+
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        li {
+            background-color: #f2f2f2;
+            margin: 10px 0;
+            padding: 10px;
+            border-left: 4px solid #00cc00;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Пользовател: {{ user.phone_number }}</h1>
+    </header>
+    <div class="container">
+        <p>Мой пригласительный код: {{ user.my_invite_code }}</p>
+        
+        <h2>Код приглашения друга:</h2>
+        {% if user.friend_invite_code %}
+            <p>{{ user.friend_invite_code }}</p>
+        {% else %}
+            <form method="post" action="{% url 'verify-friend-invite' %}">
+                {% csrf_token %}
+                <input type="text" name="friend_invite_code" placeholder="Enter Friend Invite Code" required>
+                <button type="submit">Submit</button>
+            </form>
+        {% endif %}
+        
+        <h2>Пользователи, которые использовали мой код приглашения</h2>
+        <ul>
+            {% for friend in friends %}
+            <li>{{ friend.phone_number }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
