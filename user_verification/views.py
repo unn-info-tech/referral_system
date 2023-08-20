@@ -23,8 +23,9 @@ class PhoneNumberVerificationView(APIView):
         if serializer.is_valid():
             phone_number = serializer.validated_data['phone_number']
             verification_code = generate_verification_code()
+            print(verification_code)
 
-            '''# Initialize Twilio client
+            # Initialize Twilio client
             account_sid = 'ACb38e675436f00fcc6047c52b21cd4a38'
             auth_token = '55fde810186a6bdedc810933ea835b66'
             client = Client(account_sid, auth_token)
@@ -34,8 +35,8 @@ class PhoneNumberVerificationView(APIView):
                 body=f"Your verification code is: {verification_code}",
                 from_='+19403503116',
                 to=phone_number
-            )'''
-            print(verification_code)
+            )
+            
 
             # Store the verification code in the session for later validation
             request.session['verification_code'] = verification_code
