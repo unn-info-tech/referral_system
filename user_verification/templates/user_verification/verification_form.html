@@ -59,7 +59,7 @@
     <h1>Подтверждение номера телефона</h1>
     <form method="post" action="{% url 'verify-phone' %}">
         {% csrf_token %}
-        <label for="phone_number">Введите свой номер телефона:</label>
+        <label for="phone_number">Введите свой номер телефона: Например(+7........)</label>
         <input type="text" id="phone_number" name="phone_number">
         <button type="submit">Отправить код подтверждения</button>
     </form>

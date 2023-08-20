@@ -92,15 +92,15 @@
         {% else %}
             <form method="post" action="{% url 'verify-friend-invite' %}">
                 {% csrf_token %}
-                <input type="text" name="friend_invite_code" placeholder="Enter Friend Invite Code" required>
-                <button type="submit">Submit</button>
+                <input type="text" name="friend_invite_code" placeholder="Введите код приглашения друга" required>
+                <button type="submit">Отправить</button>
             </form>
         {% endif %}
         
         <h2>Пользователи, которые использовали мой код приглашения</h2>
         <ul>
             {% for friend in friends %}
-            <li>{{ friend.phone_number }}</li>
+            <li>{{ forloop.counter }}. {{ friend.phone_number }}</li>
             {% endfor %}
         </ul>
     </div>

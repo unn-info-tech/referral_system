@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import Http404
 from .utils import generate_verification_code
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -23,17 +24,18 @@ class PhoneNumberVerificationView(APIView):
             phone_number = serializer.validated_data['phone_number']
             verification_code = generate_verification_code()
 
-            # Initialize Twilio client
-            account_sid = 'AC82d051a0657600868f58f6ede62f1754'
-            auth_token = '900598d015e04cad5b581b0262911b1f'
+            '''# Initialize Twilio client
+            account_sid = 'ACb38e675436f00fcc6047c52b21cd4a38'
+            auth_token = '55fde810186a6bdedc810933ea835b66'
             client = Client(account_sid, auth_token)
 
             # Send SMS
             message = client.messages.create(
                 body=f"Your verification code is: {verification_code}",
-                from_='+16184861853',
+                from_='+19403503116',
                 to=phone_number
-            )
+            )'''
+            print(verification_code)
 
             # Store the verification code in the session for later validation
             request.session['verification_code'] = verification_code
@@ -43,7 +45,7 @@ class PhoneNumberVerificationView(APIView):
 
             return redirect('verify-code')
         else:
-            return self.response_for_error(request)
+            return render(request, 'user_verification/error.html', {'error': 'Ввод недействителен'})
 
 
 
@@ -81,7 +83,7 @@ class CodeVerificationView(APIView):
 
 
             del request.session['verification_code']
-            return Response({"message": "Verification successful. You can proceed with registration."})
+            return redirect('my-page')
             #return render(request, 'user_verification/verify_success.html')
         else:
             # Code is incorrect, display error message
@@ -96,7 +98,7 @@ class MyPageView(APIView):
         try:
             user = CustomUser.objects.get(phone_number=phone_number)
         except CustomUser.DoesNotExist:
-            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+            return render(request, 'user_verification/error.html', {'error': 'Пользователь не найден'})
         
         if user.is_verified:
             # Get users with the same friend_invite_code
@@ -109,7 +111,7 @@ class MyPageView(APIView):
             
             return render(request, 'user_verification/my_page.html', context)
         else:
-            return Response({"error": "User is not verified"}, status=status.HTTP_403_FORBIDDEN)
+            return render(request, 'user_verification/error.html', {'error': 'Пользователь не проверен'})
         
 
     
@@ -120,7 +122,7 @@ class VerifyFriendInviteView(APIView):
         try:
             user = CustomUser.objects.get(phone_number=phone_number)
         except CustomUser.DoesNotExist:
-            return render(request, 'user_verification/error.html', {"error": "User not found"})
+            return render(request, 'user_verification/error.html', {'error': 'Пользователь не найден'})
         
         if user.is_verified:
             friend_invite_code = request.POST.get('friend_invite_code')
@@ -129,7 +131,7 @@ class VerifyFriendInviteView(APIView):
             try:
                 invite = InviteCode.objects.get(invite_code=friend_invite_code)
             except InviteCode.DoesNotExist:
-                return render(request, 'user_verification/error.html', {"error": "Invalid friend invite code"})
+                return render(request, 'user_verification/error.html', {'error': 'Неверный код приглашения друга'})
             
             # Update the user's friend_invite_code
             user.friend_invite_code = invite
@@ -139,7 +141,7 @@ class VerifyFriendInviteView(APIView):
             return redirect('my-page')  # You can replace 'my-page' with the appropriate URL name
         
         else:
-            return render(request, 'user_verification/error.html', {"error": "User is not verified"})
+            return render(request, 'user_verification/error.html', {'error': 'Пользователь не проверен'})
 
 
 
