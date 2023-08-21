@@ -86,4 +86,89 @@ B) После отправки номера телефона вы увидите
 
 
 
+# referral_system
+
+# API for Phone Number Verification
+
+This Django application provides an **API** for phone number verification, friend invitation codes, and user profile pages.
+
+**Explaining the API: If you want, you can try using JSON and APIView on your own. 
+But if you prefer not to, the project is already prepared. It includes an HTML display. 
+You can directly proceed to the 'Getting Started and Usage' section to start using it. 
+This section contains instructions for using the ready-made project. 
+I've also deployed it on PythonAnywhere (https://codebroh.pythonanywhere.com/verify-phone/). You can visit and use it. 
+However, before using it, please contact me (https://t.me/nematulloh_uktamov) so that I can add your phone number to Twilio (it sends SMS to your phone number). 
+Alternatively, follow the instructions in the README to see the confirmation code in the terminal during execution.**
+
+## Endpoints
+
+### Phone Number Verification
+
+#### Request
+
+- **POST /verify-phone/**
+  - Send your phone number to initiate the verification process.
+  - Request Body: **JSON**
+    ```json
+    {
+        "phone_number": "your_phone_number"
+    }
+    ```
+  - Response: Redirect to **/verify-code/**
+
+#### Code Verification
+
+- **GET /verify-code/**
+  - Display the form to enter the verification code.
+  - Request Body: None
+  - Response: **HTML** form
+
+- **POST /verify-code/**
+  - Verify the entered verification code.
+  - Request Body: **JSON**
+    ```json
+    {
+        "verification_code": "entered_code"
+    }
+    ```
+  - Response: Redirect to **/my-page/** upon successful verification or display an error message.
+
+### User Profile Page
+
+- **GET /my-page/**
+  - Display the user profile page after successful verification.
+  - Request Body: None
+  - Response: **HTML** page with user data and friend invitation codes.
+
+#### Verify Friend Invitation Code
+
+- **POST /verify-friend-invite/**
+  - Verify a friend's invitation code and associate it with the user.
+  - Request Body: Form data
+    ```json
+    {
+        "friend_invite_code": "friend_code"
+    }
+    ```
+  - Response: Redirect to **/my-page/** upon successful verification or display an error message.
+
+## Getting Started
+
+1. Clone this repository.
+2. Create a Django virtual environment and install the required dependencies (twilio, pyotp, decouple, djangorestframework).
+3. A) Update the Twilio settings in your views.py file.
+   Log in, create a twilio account, and copy the SID, token, and your twilio number.
+   Or, contact me (https://t.me/nematulloh_uktamov) to add your phone number to my Twilio account (it sends SMS to your phone number).
+   B) After sending the phone number, you will see a 4-digit code printed in the terminal that you're working with.
+5. Apply migrations: `python manage.py makemigrations && python manage.py migrate`
+6. Create a superuser: `python manage.py createsuperuser`
+7. Run the application: `python manage.py runserver`
+
+## Usage
+
+1. Visit **/verify-phone/** and enter your phone number to receive a verification code.
+2. Go to **/verify-code/** and enter the received code.
+3. After successful verification, go to **/my-page/** to view the user profile page.
+4. Use **/verify-friend-invite/** if needed to associate friend invitation codes.
+
 
