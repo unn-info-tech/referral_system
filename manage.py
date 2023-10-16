@@ -20,3 +20,31 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+
+
+"""version: '3'
+services:
+  web:
+    image: refferal_system
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=True
+      - DJANGO_DB_HOST=db
+    depends_on:
+      - db
+  db:
+    image: postgres:12
+    environment:
+      - POSTGRES_DB=postgerql
+      - POSTGRES_USER=nematulloh
+      - POSTGRES_PASSWORD=mypostgres
+"""
