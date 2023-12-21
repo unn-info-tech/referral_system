@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The Referral System is a Django-based API for phone number verification, friend invitation codes, and user profiles.
+The Referral System is a Django Rest Framework-based APIs for phone number verification, friend invitation codes, and user profiles.
 
 
 ## Features
