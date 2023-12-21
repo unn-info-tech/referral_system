@@ -13,7 +13,7 @@ The Referral System is a Django Rest Framework-based APIs for phone number verif
 
 ## Used Technologies for Backend:
 - **Python**: Programming language used for backend development.
-- **Django Rest Framework**: Backend framework for API development.
+- **Django Framework**: Backend framework for API development.
 - **Twilio API**: Integrated for SMS functionality.
 - **Python Libraries**: pyotp, decouple, djangorestframework.
 
