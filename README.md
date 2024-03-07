@@ -23,9 +23,9 @@ The Referral System is a Django Rest Framework-based APIs for phone number verif
 
 ## Gained Experience and Skills
 
-- **API Development**: Creating RESTful APIs using Django and Django REST framework.
-- **Integration with Twilio**: Incorporating Twilio API for SMS functionalities.
-- **Frontend Design**: Implementing HTML/CSS for web interfaces.
+- **API Development**: Built RESTful APIs (Django/Django REST) for efficient data exchange and integration.
+- **Integration with Twilio**: Integrated Twilio API for enhanced user communication & engagement.
+- **Frontend Design**: Developed responsive, user-friendly web interfaces (HTML/CSS) for optimal user experience.
 
 
 ## Getting Started
