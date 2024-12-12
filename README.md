@@ -30,12 +30,39 @@ The Referral System is a Django Rest Framework-based APIs for phone number verif
 
 ## Getting Started
 
-1. Clone this repository.
-2. Create a Django virtual environment and install the required dependencies (twilio, pyotp, decouple, djangorestframework).
-3. Update the Twilio settings in your views.py file. You can obtain the necessary credentials from Twilio or get assistance to link your phone number to the Twilio account.
-4. After setting up Twilio, execute the necessary commands to apply migrations and create a superuser.
-5. Run the application using the command: `python manage.py runserver`
+Clone this repository.
+```
+   git clone https://github.com/unn-info-tech/referral_system.git
+```
 
+Create a virtual environment:
+```
+   python -m venv venv # create
+   venv\Scripts\activate # activate
+```
+Install the required dependencies:
+```
+   pip install -r requirements.txt
+```
+**OR**
+```
+     docker-compose up --build
+```   
+   
+Run the application using `docker run`:
+```
+     docker-compose up --build
+```      
+```
+   docker run -d -p 8000:8000 --name refCreate a virtual environment 
+```
+- Update the Twilio settings in your views.py file. You can obtain the necessary credentials from Twilio or get assistance to link your phone number to the Twilio account.
+- After setting up Twilio, execute the necessary commands to apply migrations and create a superuser.
+- Run the application using the command:
+```
+   python manage.py runserver
+```
+   
 ## Usage
 
 1. Visit /verify-phone/ and enter your phone number to receive a verification code.
