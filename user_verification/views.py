@@ -3,7 +3,7 @@ from django.http import Http404
 from .utils import generate_verification_code
 from rest_framework.views import APIView
 from rest_framework.response import Response
-#from twilio.rest import Client
+from twilio.rest import Client
 from .serializers import PhoneNumberVerificationSerializer
 from django.http import HttpResponseBadRequest
 from django.shortcuts import redirect
