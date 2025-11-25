@@ -1,0 +1,37 @@
+name: Django CI/CD to PythonAnywhere
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.10"
+
+    - name: Install dependencies
+      run: |
+        pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run tests
+      run: python manage.py test
+
+    - name: Deploy updated code (reload PythonAnywhere app)
+      run: |
+        pip install pythonanywhere
+        python - <<EOF
+from pythonanywhere.api import PythonAnywhere as PA
+
+pa = PA(username="${{ secrets.PA_USERNAME }}", token="${{ secrets.PA_API_TOKEN }}")
+app = pa.webapps.get("${{ secrets.PA_SITE }}")
+app.reload()
+EOF
